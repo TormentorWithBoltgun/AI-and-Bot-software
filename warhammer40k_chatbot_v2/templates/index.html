@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Warhammer 40K Servitor</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="chat-container">
+    <h1>⚔️ WARHAMMER 40K SERVITOR ⚔️</h1>
+
+    <div id="chat-box"></div>
+
+    <input id="input" placeholder="Speak, citizen..." />
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+async function sendMessage() {
+    let input = document.getElementById("input");
+    let message = input.value;
+    input.value = "";
+
+    let chatBox = document.getElementById("chat-box");
+    chatBox.innerHTML += "<div><b>You:</b> " + message + "</div>";
+
+    let response = await fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: message})
+    });
+
+    let data = await response.json();
+    chatBox.innerHTML += "<div><b>Servitor:</b> " + data.reply + "</div>";
+}
+</script>
+
+</body>
+</html>
